@@ -56,6 +56,7 @@ const updateStatusContact = async (req, res) => {
   res.json(result);
 };
 
+
 module.exports = {
     getAll: ctrlWrapper(getAll),
     getById: ctrlWrapper(getById),
