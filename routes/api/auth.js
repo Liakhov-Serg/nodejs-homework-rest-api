@@ -1,8 +1,12 @@
 const express = require('express');
-const isValidId = require("../../middlewares/isValidId");
+// const { validation, ctrlWrapper } = require('../../middlewares');
+// const validateBody = require("../../utils/validateBody");
+
+const ctrl = require('../../controllers/auth');
+const ctrlWrapper = require('../../helpers/ctrlWrapper');
 
 const router = express.Router();
 
-router.post('/register');
+router.post('/register', ctrlWrapper(ctrl.register));
 
 module.exports = router;
