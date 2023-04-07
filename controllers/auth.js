@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const ctrlWrapper = require('../helpers/ctrlWrapper');
 
 const { User } = require('../models/user');
@@ -5,14 +6,16 @@ const { User } = require('../models/user');
 const HttpError = require('../helpers/HttpError');
 
 const register = async (req, res) => {
-    const { email} = req.body;
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
     
     if (user) {
         throw HttpError(409, "Email already exist");
     }
 
-    const newUser = await User.create(req.body);
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const newUser = await User.create({...req.body, password: hashPassword});
 
     res.staus(201).join({
         name: newUser.name,
@@ -24,6 +27,24 @@ const register = async (req, res) => {
 
 }
 
+const login = async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Email invalid");
+    }
+    const passwordCompare = await bcrypt.compare(password, user.password);
+    if (!passwordCompare) {
+        throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Password invalid");  
+    }
+    const token = "23w24.gsfh.4545";
+    res.join({
+        token,
+    })
+
+}
+
 module.exports = {
     register: ctrlWrapper(register),
+    login: ctrlWrapper(login),
 }
