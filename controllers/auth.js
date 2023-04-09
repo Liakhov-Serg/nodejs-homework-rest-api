@@ -24,25 +24,25 @@ const register = async(req, res)=> {
 
 }
 
-// const login = async(req, res) => {
-//     const {email, password} = req.body;
-//     const user = await User.findOne({email});
-//     if(!user) {
-//         throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Email invalid");
-//     }
-//     const passwordCompare = await bcrypt.compare(password, user.password);
-//     if(!passwordCompare) {
-//         throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Password invalid");
-//     }
+const login = async(req, res) => {
+    const {email, password} = req.body;
+    const user = await User.findOne({email});
+    if(!user) {
+        throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Email invalid");
+    }
+    const passwordCompare = await bcrypt.compare(password, user.password);
+    if(!passwordCompare) {
+        throw HttpError(401, "Email or password invalid"); // throw HttpError(401, "Password invalid");
+    }
     
-//     const token = "23w24.gsfh.4545";
-//     res.json({
-//         token,
-//     })
+    const token = "23w24.gsfh.4545";
+    res.json({
+        token,
+    })
 
-// }
+}
 
 module.exports = {
     register: ctrlWrapper(register),
-    // login: ctrlWrapper(login),
+    login: ctrlWrapper(login),
 }
