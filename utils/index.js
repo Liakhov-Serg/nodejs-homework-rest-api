@@ -5,4 +5,4 @@ const validateBody = require("./validateBody");
 module.exports = {
     ctrlWrapper,
     validateBody,
-}
+};
