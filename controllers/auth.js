@@ -3,13 +3,15 @@ const jwt = require('jsonwebtoken');
 const gravatar = require('gravatar');
 const fs = require('fs/promises');
 const path = require('path');
-const {nanoid} = require("nanoid");
+// const { nanoid } = require("nanoid");
+const {v4: uuidv4} = require("uuid");
 
 const ctrlWrapper = require('../utils/ctrlWrapper');
 
 const { User } = require('../models/user');
 
-const {HttpError, sendEmail} = require('../helpers/HttpError');
+const { HttpError, sendEmail} = require('../helpers');
+// const { sendEmail} = require('../helpers/sendEmail');
 
 const avatarDir = path.join(__dirname, "../", "public", "avatars");
 
@@ -24,7 +26,8 @@ const register = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
     const avatarURL = gravatar.url(email);
-    const verificationCode = nanoid();
+    // const verificationCode = nanoid();
+    const verificationCode = uuidv4();
 
     const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL, verificationCode});
 
